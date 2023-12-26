@@ -8,6 +8,7 @@ import { transformTRPCResponse, getTRPCErrorFromUnknown } from './utils'
 
 import type { TSchema } from '@sinclair/typebox'
 import type { TRPCClientIncomingRequest, TRPCOptions } from './types'
+import { getErrorShape } from '@trpc/server/shared'
 
 export function compile<T extends TSchema>(schema: T) {
     const check = getSchemaValidator(schema, {})
@@ -100,7 +101,7 @@ export const trpc =
                         const result = await callProcedure({
                             procedures: router._def.procedures,
                             path: incoming.params.path,
-                            rawInput: incoming.params.input?.json,
+                            getRawInput: async () => incoming.params.input?.json,
                             type: incoming.method,
                             ctx: {}
                         })
@@ -156,14 +157,15 @@ export const trpc =
                                         transformTRPCResponse(router, {
                                             id: incoming.id,
                                             jsonrpc: incoming.jsonrpc,
-                                            error: router.getErrorShape({
-                                                error: getTRPCErrorFromUnknown(
-                                                    err
-                                                ),
-                                                type: incoming.method as 'subscription',
-                                                path: incoming.params.path,
-                                                input: incoming.params.input,
-                                                ctx: {}
+                                            error: getErrorShape({
+                                              config: router._def.config,
+                                              error: getTRPCErrorFromUnknown(
+                                                err
+                                              ),
+                                              type: incoming.method as 'subscription',
+                                              path: incoming.params.path,
+                                              input: incoming.params.input,
+                                              ctx: {}
                                             })
                                         })
                                     )

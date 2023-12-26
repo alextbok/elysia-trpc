@@ -1,54 +1,12 @@
 import {
     AnyRouter,
-    callProcedure,
-    CombinedDataTransformer,
     ProcedureType,
     TRPCError
 } from '@trpc/server'
 import {
-    TRPCClientOutgoingMessage,
     TRPCResponse,
     TRPCResponseMessage
 } from '@trpc/server/rpc'
-
-function assertIsObject(obj: unknown): asserts obj is Record<string, unknown> {
-    if (typeof obj !== 'object' || Array.isArray(obj) || !obj) {
-        throw new Error('Not an object')
-    }
-}
-
-function assertIsProcedureType(obj: unknown): asserts obj is ProcedureType {
-    if (obj !== 'query' && obj !== 'subscription' && obj !== 'mutation') {
-        throw new Error('Invalid procedure type')
-    }
-}
-
-function assertIsRequestId(
-    obj: unknown
-): asserts obj is number | string | null {
-    if (
-        obj !== null &&
-        typeof obj === 'number' &&
-        isNaN(obj) &&
-        typeof obj !== 'string'
-    ) {
-        throw new Error('Invalid request id')
-    }
-}
-
-function assertIsString(obj: unknown): asserts obj is string {
-    if (typeof obj !== 'string') {
-        throw new Error('Invalid string')
-    }
-}
-
-function assertIsJSONRPC2OrUndefined(
-    obj: unknown
-): asserts obj is '2.0' | undefined {
-    if (typeof obj !== 'undefined' && obj !== '2.0') {
-        throw new Error('Must be JSONRPC 2.0')
-    }
-}
 
 export function transformTRPCResponseItem<
     TResponseItem extends TRPCResponse | TRPCResponseMessage
@@ -111,9 +69,9 @@ export function getErrorFromUnknown(cause: unknown): Error {
 
 export function getTRPCErrorFromUnknown(cause: unknown): TRPCError {
     const error = getErrorFromUnknown(cause)
-    // this should ideally be an `instanceof TRPCError` but for some reason that isn't working
-    // ref https://github.com/trpc/trpc/issues/331
-    if (error.name === 'TRPCError') return cause as TRPCError
+    if (error instanceof TRPCError) {
+      return cause as TRPCError
+    }
 
     const trpcError = new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
@@ -131,6 +89,5 @@ export function getCauseFromUnknown(cause: unknown) {
     if (cause instanceof Error) {
         return cause
     }
-
     return undefined
 }
