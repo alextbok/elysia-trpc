@@ -1,15 +1,11 @@
 {
-    "name": "@elysiajs/trpc",
+    "name": "@alextbok/elysiajs-trpc",
     "version": "0.8.0",
     "description": "A plugin for Elysia that add support for using tRPC",
     "author": {
         "name": "saltyAom",
         "url": "https://github.com/SaltyAom",
         "email": "saltyaom@gmail.com"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/elysiajs/elysia-trpc"
     },
     "main": "./dist/index.js",
     "exports": {
@@ -40,7 +36,7 @@
         "@types/bun": "latest",
         "@types/node": "^20.1.4",
         "@types/ws": "^8.5.4",
-        "elysia": "0.8.0",
+        "elysia": "0.8.8",
         "eslint": "^8.40.0",
         "rimraf": "4.4.1",
         "typescript": "^5.3.3"
