@@ -1,6 +1,7 @@
 import { Elysia, getSchemaValidator } from "elysia";
 
-import { callProcedure, Router, TRPCError } from "@trpc/server";
+import { callProcedure, TRPCError } from "@trpc/server";
+import { Router } from "@trpc/core";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { isObservable, Unsubscribable } from "@trpc/server/observable";
 
