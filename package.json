@@ -32,9 +32,9 @@
     "typecheck": "tsc --noemit --pretty"
   },
   "devDependencies": {
-    "@trpc/client": "11.0.0-next-beta.222",
-    "@trpc/core": "11.0.0-next-beta.216",
-    "@trpc/server": "11.0.0-next-beta.222",
+    "@trpc/client": "11.0.0-next.327",
+    "@trpc/core": "11.0.0-alpha-tmp.179",
+    "@trpc/server": "11.0.0-next.327",
     "@types/bun": "latest",
     "@types/ws": "^8.5.4",
     "elysia": "0.8.9",
